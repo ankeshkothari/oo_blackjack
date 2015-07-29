@@ -52,10 +52,12 @@ module Hand
       @total += 10
     end
 
+    @total
+  end
+
+  def state_total
     puts "#{@name} has a total of #{@total} points"
     puts " "
-
-    @total
   end
 
   def busted?
@@ -151,11 +153,13 @@ class Game
     @player.hand << @cards.deal_one
     @player.show_hand
     @player.total
+    @player.state_total
 
     puts "Dealer's first card is hidden"
     @dealer.hand << @cards.deal_one
     @dealer.show_hand
     @dealer.total
+    @dealer.state_total
   end
 
   def winner_declare
@@ -183,7 +187,7 @@ class Game
       puts "#{@player.name} has Rs #{@player.total_amount} remaining."
 
     elsif @player.total > @dealer.total
-      if player.total == 21
+      if @player.total == 21
         puts "#{@player.name} has #{@player.total}"
         puts "#{@player.name} has a Blackjack!"
         puts " "
@@ -224,6 +228,7 @@ class Game
 
       if key == "s"
         puts "#{@player.name} stays."
+        puts " "
         break
       end
 
@@ -231,6 +236,7 @@ class Game
       puts "#{@player.name} got #{current_card[1]} of #{current_card[0]}"
       @player.hand << current_card
       @player.total
+      @player.state_total
 
     end until @player.busted? || key == "s"
 
@@ -244,7 +250,8 @@ class Game
         current_card = @cards.deal_one
         puts "Dealer got #{current_card[1]} of #{current_card[0]}"
         @dealer.hand << current_card
-        # @dealer.total
+        @dealer.total
+        @dealer.state_total
       end until @dealer.total > 17 || @dealer.busted?
 
     end
